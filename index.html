@@ -7,22 +7,26 @@
     <script src="/javascripts/jquery-1.8.3.min.js"></script>
     <script src="/socket.io/socket.io.js" type="text/javascript"></script>
     <script type="text/javascript">
-
     var nodejs_server = "window.location.href";
     var socket = io.connect();
-       socket.emit("send","我是網頁資料");
+    socket.emit("send", "我是網頁資料");
 
 
-       socket.on("response", function (data) {
-            alert(data);
-       });
+    socket.on("response", function(data) {
+        alert(data);
+    });
+    socket.on("showImg", function(data) {
+        var showimg = document.getElementById('showimg');
+        showimg.style.display = 'block';
+        showimg.src = "data:image/jpeg;base64," + data.img;
+    });
     </script>
 
 </head>
 
 <body>
 
-
+    <img style="display:none;width:600;height:600px;" id="showimg" src="" />
 </body>
 
 </html>

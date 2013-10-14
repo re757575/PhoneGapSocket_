@@ -43,5 +43,10 @@ io = io.listen(server);
 		 	console.log("已接收data:"+data);
 		 	 io.sockets.emit('response', "server已收到 data:"+data);
 		 });
+
+		 socket.on('upload', function (data) {
+		 	console.log("已接收圖片:"+data.img);
+		 	 io.sockets.emit('showImg',{ img : data.img });
+		 });		 
 	});
 
