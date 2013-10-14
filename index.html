@@ -27,13 +27,13 @@
     <button id="camera">拍照</button>
     <button id="beep">蜂鳴</button>
     <button id="vibrate">震動</button>
-    <button id="device">設備資訊</button>
+    <button id="recordAudio">錄音</button>
     <div id="device_info"></div>
     <img style="display:none;width:600;height:600px;" id="showimg" src="" />
 
 
     <script type="text/javascript">
-    var ip ;
+    var ip;
     $("button").bind("click", function() {
         console.log(this.id);
         socket.emit("action", this.id);
@@ -57,8 +57,13 @@
         $("#device_info").html(str);
 
     });
+
+
+    socket.on("Record_result", function(data) {
+        alert("錄音:"+data);
+    });
     socket.on("_disconnect", function(data) {
-        alert("IP:"+ip+"以離線");
+        alert("IP:" + ip + "已離線");
         var showimg = document.getElementById('showimg');
         showimg.style.display = 'none';
         showimg.src = "";

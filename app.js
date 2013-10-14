@@ -64,10 +64,18 @@ io.sockets.on('connection', function(socket) {
         console.log("device: " + data);
         io.sockets.emit('device_info', data);
     });
+
+    socket.on('Record', function(data) {
+        console.log("Record: " + data);
+        io.sockets.emit('Record_result', data);
+    });
+
     socket.on('disconnect', function() {
         console.log(ip + "    disconnect  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
          io.sockets.emit('_disconnect', "_disconnect");
     });
+
+
 });
 
 
