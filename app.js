@@ -40,34 +40,28 @@ var server = http.createServer(app).listen(app.get('port'), function() {
 io = io.listen(server);
 
 io.sockets.on('connection', function(socket) {
-    socket.on('send', function(data) {
-        console.log("已接收data:" + data);
-        io.sockets.emit('response', {
-            ClientIp: ip,
-            _text: data
+        socket.on('send', function(data) {
+            console.log("已接收data:" + data);
+            io.sockets.emit('response', {
+                ClientIp: ip,
+                _text: data
+            });
         });
-    });
 
-    socket.on('upload', function(data) {
-        console.log("已接收圖片:" + data.img);
-        io.sockets.emit('showImg', {
-            img: data.img
+        socket.on('upload', function(data) {
+            console.log("已接收圖片:" + data.img);
+            io.sockets.emit('showImg', {
+                img: data.img
+            });
         });
-    });
 
-    socket.on('action', function(data) {
-        console.log("action: " + data);
+        socket.on('action', function(data) {
+                console.log("action: " + data);
 
-        switch (data) {
-            case "camera":
-                io.sockets.emit('mobile_action', data);
-                break;   
-            case "beep":
-                io.sockets.emit('mobile_action', data);
-                break;                   
-        }
+                io.sockets.emit('mobile_action', data); //camera ,beep     
+            }
 
-    });
+        });
 });
 
 
