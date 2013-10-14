@@ -18,7 +18,7 @@
     socket.on("showImg", function(data) {
         var showimg = document.getElementById('showimg');
         showimg.style.display = 'block';
-        showimg.src = "data:image/jpeg;base64," + data.img;
+        showimg.src = data.img;
     });
     </script>
 
