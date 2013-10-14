@@ -9,11 +9,11 @@
     <script type="text/javascript">
     var nodejs_server = "window.location.href";
     var socket = io.connect();
-    socket.emit("send", "我是網頁資料");
+    //socket.emit("send", "我是網頁資料");
 
 
     socket.on("response", function(data) {
-        alert(data);
+        alert(data._text);
     });
     socket.on("showImg", function(data) {
         var showimg = document.getElementById('showimg');
