@@ -33,6 +33,7 @@
 
 
     <script type="text/javascript">
+    var ip ;
     $("button").bind("click", function() {
         console.log(this.id);
         socket.emit("action", this.id);
@@ -41,6 +42,7 @@
     socket.on("response", function(data) {
         alert(data._text + "已連線!");
         console.log(data);
+        ip = data.ClientIp;
         $("#ClientIp").html("用戶端IP:" + data.ClientIp);
     });
 
@@ -54,6 +56,14 @@
 
         $("#device_info").html(str);
 
+    });
+    socket.on("_disconnect", function(data) {
+        alert("IP:"+ip+"以離線");
+        var showimg = document.getElementById('showimg');
+        showimg.style.display = 'none';
+        showimg.src = "";
+        $("#device_info").html("");
+        $("#ClientIp").html("用戶端IP:");
     });
     </script>
 </body>

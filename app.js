@@ -40,30 +40,34 @@ var server = http.createServer(app).listen(app.get('port'), function() {
 io = io.listen(server);
 
 io.sockets.on('connection', function(socket) {
-        socket.on('send', function(data) {
-            console.log("已接收data:" + data);
-            io.sockets.emit('response', {
-                ClientIp: ip,
-                _text: data
-            });
+    socket.on('send', function(data) {
+        console.log("已接收data:" + data);
+        io.sockets.emit('response', {
+            ClientIp: ip,
+            _text: data
         });
+    });
 
-        socket.on('upload', function(data) {
-            console.log("已接收圖片:" + data.img);
-            io.sockets.emit('showImg', {
-                img: data.img
-            });
+    socket.on('upload', function(data) {
+        console.log("已接收圖片:" + data.img);
+        io.sockets.emit('showImg', {
+            img: data.img
         });
+    });
 
-        socket.on('action', function(data) {
-                console.log("action: " + data);
-                io.sockets.emit('mobile_action', data); //camera ,beep     
-        });
+    socket.on('action', function(data) {
+        console.log("action: " + data);
+        io.sockets.emit('mobile_action', data); //camera ,beep     
+    });
 
-        socket.on('device', function(data) {
-                console.log("device: " + data);
-                io.sockets.emit('device_info', data);      
-        });        
+    socket.on('device', function(data) {
+        console.log("device: " + data);
+        io.sockets.emit('device_info', data);
+    });
+    socket.on('disconnect', function() {
+        console.log(ip + "    disconnect  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+         io.sockets.emit('_disconnect', "_disconnect");
+    });
 });
 
 
