@@ -63,7 +63,7 @@ io.sockets.on('connection', function(socket) {
                 io.sockets.emit('mobile_action', data);
                 break;   
             case "beep":
-                io.sockets.emit('mobile_action', beep);
+                io.sockets.emit('mobile_action', data);
                 break;                   
         }
 
