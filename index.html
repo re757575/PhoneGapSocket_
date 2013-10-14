@@ -9,7 +9,7 @@
     <script type="text/javascript">
     var nodejs_server = "window.location.href";
     var socket = io.connect();
-   // socket.emit("send", "我是網頁資料");
+    // socket.emit("send", "我是網頁資料");
 
 
 
@@ -24,24 +24,37 @@
 
 <body>
     <p id="ClientIp"></p>
-    <button id="camera" >拍照</button>
-    <button id="beep" >蜂鳴</button>
-    <button id="vibrate" >震動</button>
+    <button id="camera">拍照</button>
+    <button id="beep">蜂鳴</button>
+    <button id="vibrate">震動</button>
+    <button id="device">設備資訊</button>
+    <div id="device_info"></div>
     <img style="display:none;width:600;height:600px;" id="showimg" src="" />
 
 
     <script type="text/javascript">
-    $("button").bind("click",function(){
+    $("button").bind("click", function() {
         console.log(this.id);
         socket.emit("action", this.id);
     });
 
     socket.on("response", function(data) {
-        alert(data._text+"已連線!");
+        alert(data._text + "已連線!");
         console.log(data);
-        $("#ClientIp").html("用戶端IP:"+data.ClientIp);
-    });    
-        
+        $("#ClientIp").html("用戶端IP:" + data.ClientIp);
+    });
+
+    socket.on("device_info", function(data) {
+        console.log(data);
+        var str = 'Device Name: ' + data.name + '<br  />' +
+            'Device PhoneGap: ' + data.phonegap + '<br  />' +
+            'Device Platform: ' + data.platform + '<br  />' +
+            'Device UUID: ' + data.uuid + '<br  />' +
+            'Device Version: ' + data.version + '<br  />';
+
+        $("#device_info").html(str);
+
+    });
     </script>
 </body>
 

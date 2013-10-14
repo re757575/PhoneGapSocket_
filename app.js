@@ -59,6 +59,11 @@ io.sockets.on('connection', function(socket) {
                 console.log("action: " + data);
                 io.sockets.emit('mobile_action', data); //camera ,beep     
         });
+
+        socket.on('device', function(data) {
+                console.log("device: " + data);
+                io.sockets.emit('device_info', data);      
+        });        
 });
 
 
