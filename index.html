@@ -24,11 +24,14 @@
 
 <body>
     <p id="ClientIp"></p>
+    <button id="camera" >拍照</button>
     <img style="display:none;width:600;height:600px;" id="showimg" src="" />
 
 
     <script type="text/javascript">
-
+    $("#camera").click(function(){
+        socket.emit("action", "camera");
+    });
 
     socket.on("response", function(data) {
         alert(data._text+"已連線!");

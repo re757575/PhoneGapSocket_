@@ -54,6 +54,17 @@ io.sockets.on('connection', function(socket) {
             img: data.img
         });
     });
+
+    socket.on('action', function(data) {
+        console.log("action: " + data);
+
+        switch (data) {
+            case "camera":
+                io.sockets.emit('mobile_action', data);
+                break;   
+        }
+
+    });
 });
 
 
