@@ -57,10 +57,7 @@ io.sockets.on('connection', function(socket) {
 
         socket.on('action', function(data) {
                 console.log("action: " + data);
-
                 io.sockets.emit('mobile_action', data); //camera ,beep     
-            }
-
         });
 });
 
