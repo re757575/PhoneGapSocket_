@@ -25,12 +25,14 @@
 <body>
     <p id="ClientIp"></p>
     <button id="camera" >拍照</button>
+    <button id="beep" >蜂鳴</button>
     <img style="display:none;width:600;height:600px;" id="showimg" src="" />
 
 
     <script type="text/javascript">
-    $("#camera").click(function(){
-        socket.emit("action", "camera");
+    $("button").bind("click",function(){
+        console.log(this.id);
+        socket.emit("action", this.id);
     });
 
     socket.on("response", function(data) {
