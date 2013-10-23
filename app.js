@@ -70,6 +70,11 @@ io.sockets.on('connection', function(socket) {
         io.sockets.emit('Record_result', data);
     });
 
+    socket.on('acceler', function(data) {
+        console.log("acceler: " + data);
+        io.sockets.emit('acceler_result', data);
+    });
+    
     socket.on('disconnect', function() {
         console.log(ip + "    disconnect  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
          io.sockets.emit('_disconnect', "_disconnect");

@@ -27,9 +27,11 @@
     <button id="camera">拍照</button>
     <button id="beep">蜂鳴</button>
     <button id="vibrate">震動</button>
+    <button id="acceler">加速度感測器</button>
     <button id="recordAudio">錄音</button>
     <button id="stopRecord">停止錄音</button>
     <div id="device_info"></div>
+    <div id="xyz"></div>
     <img style="display:none;width:600;height:600px;" id="showimg" src="" />
 
 
@@ -63,12 +65,19 @@
     socket.on("Record_result", function(data) {
         alert("錄音:"+data);
     });
+
+
+    socket.on("acceler_result", function(data) {
+        $("#xyz").html(data);
+    });
+
     socket.on("_disconnect", function(data) {
         alert("IP:" + ip + "已離線");
         var showimg = document.getElementById('showimg');
         showimg.style.display = 'none';
         showimg.src = "";
         $("#device_info").html("");
+         $("#xyz").html("");
         $("#ClientIp").html("用戶端IP:");
     });
     </script>
