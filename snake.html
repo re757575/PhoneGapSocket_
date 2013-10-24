@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<!--
+  Created using jsbin.com
+  Source can be edited via http://jsbin.com/iWipajo/3/edit
+-->
+
+<head>
+    <meta name="description" content="蛇" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <meta charset=utf-8 />
+    <title>JS Bin</title>
+
+    <style id="jsbin-css">
+    </style>
+</head>
+
+<body>
+    <a id="start" href="#">start</a>
+    <a id="add" href="#">add</a>
+    <a id="stop" href="#">暫停</a>
+    <button id="point">分數: 0</button>
+    <button id="addlevel">增加難度</button>
+    <div></div>
+    <script>
+    var timer;
+    var max_x;
+    var max_y;
+    var speed;
+    var snake_body;
+    var snake_length;
+    var current_location_x;
+    var current_location_y;
+    var current_direction;
+    var food_location_x;
+    var food_location_y;
+    var right_lock;
+    var left_lock;
+    var up_lock
+    var down_lock;
+    var goon;
+    var point;
+    var getfood_point = 5;
+
+    $("#start").click(function() {
+        start();
+        return false;
+    });
+    $("#stop").click(function() {
+        stop();
+        return false;
+    });
+    $("#restart").click(function() {
+        start();
+        return false;
+    });
+    $("#addlevel").click(function() {
+
+        point += 10;
+    });
+
+    $("#add").click(function() {
+        if (current_direction == 'right') {
+            snake_body.push(['#', current_location_y, '_', ++current_location_x].join(''));
+        } else if (current_direction == 'left') {
+            snake_body.push(['#', current_location_y, '_', --current_location_x].join(''));
+        } else if (current_direction == 'up') {
+            snake_body.push(['#', --current_location_y, '_', current_location_x].join(''));
+        } else {
+            snake_body.push(['#', ++current_location_y, '_', current_location_x].join(''));
+        }
+        return false;
+    });
+
+    var start = function() {
+        init();
+        main();
+    };
+
+    var stop = function() {
+        window.clearInterval(timer);
+    };
+
+    var gameover = function() {
+        // $(document).unbind('keydown');
+        window.clearInterval(timer);
+        alert("game over");
+        return false;
+    };
+
+    var init = function() {
+        timer;
+        max_x = 20;
+        max_y = 10;
+        speed = 650;
+        snake_body = [];
+        snake_length = 5;
+        current_length = snake_length + 1;
+        current_location_x = 15;
+        current_location_y = 5;
+        food_location_x = 0;
+        food_location_y = 0;
+        current_direction = "";
+        food_location_x = 0;
+        food_location_y = 0;
+        right_lock = false;
+        left_lock = false;
+        up_lock = false;
+        down_lock = false;
+        goon = false;
+        point = 0;
+        //布局
+        layout();
+        //畫蛇
+        init_snake(current_location_x, current_location_y, snake_length);
+        //食物
+        food_random();
+
+        info();
+        window.clearInterval(timer);
+    };
+
+
+    var main = function() {
+
+        $(document).keydown(function(e) {
+            console.log(e.keyCode);
+
+            // goon = true;
+            switch (e.keyCode) {
+                //enter開始新遊戲
+                case 13:
+                    start();
+                    break;
+                    //空白鍵暫停    
+                case 32:
+                    goon = false;
+                    stop();
+                    break;
+                    //方向鍵左    
+                case 37:
+                    if (current_direction == 'left' || current_direction == 'right') {
+                        return false;
+                    } else {
+                        window.clearInterval(timer);
+                        goon = moveLeft();
+                        current_direction = 'left';
+                    }
+                    break;
+                    //方向鍵上
+                case 38:
+
+                    if (current_direction == 'up' || current_direction == 'down') {
+                        return false;
+                    } else {
+                        window.clearInterval(timer);
+                        goon = moveUp();
+                        current_direction = 'up';
+                    }
+                    break;
+                    //方向鍵右
+                case 39:
+                    if (current_direction == 'right' || current_direction == 'left') {
+                        return false;
+                    } else {
+                        window.clearInterval(timer);
+                        goon = moveRight();
+                        current_direction = 'right';
+                    }
+                    break;
+                    //方向鍵下
+                case 40:
+
+                    if (current_direction == 'down' || current_direction == 'up') {
+                        return false;
+                    } else {
+                        window.clearInterval(timer);
+                        goon = moveDown();
+                        current_direction = 'down';
+                    }
+                    break;
+
+                default:
+                    goon = false;
+                    break;
+
+            }
+            if (goon) {
+                action();
+            }
+
+        });
+
+        var action = function() {
+
+            timer = window.setInterval(function() {
+                switch (current_direction) {
+                    case 'left':
+                        moveLeft();
+                        break;
+                    case 'right':
+                        // console.log("timer right");
+                        moveRight();
+                        break;
+                    case 'up':
+                        moveUp();
+                        break;
+                    case 'down':
+                        moveDown();
+                        break;
+
+                }
+            }, speed);
+        }
+
+    };
+
+    var layout = function() {
+        $("div").html('');
+        var table = $('<table border=1></table>');
+        var tr = '<tr></tr>';
+        var td = '<td style="width:40px;height:40px;background:white"></td>';
+        for (var i = 0; i < max_y; i++) {
+            var tr_obj = $(tr);
+            for (var j = 0; j < max_x; j++) {
+
+                tr_obj.append($(td).attr('id', i + '_' + j).html(i + '_' + j));
+            }
+            table.append(tr_obj);
+        }
+
+        $("div").append(table);
+    }
+
+    var init_snake = function(x, y, s) {
+        var tem = x - s; //13 從第tem的位子開始繪圖
+        for (var i = 0; i <= x; i++) {
+
+            if (i < tem) {
+                continue;
+            }
+            snake_body.push(['#', y, '_', i].join(''));
+            draw($(snake_body[i - tem]), 'red');
+        }
+    };
+
+    var food_random = function() {
+        food_location_x = parseInt(Math.random() * max_x);
+        food_location_y = parseInt(Math.random() * max_y);
+        var tem = ['#', food_location_y, '_', food_location_x].join('');
+        if ($.inArray(tem, snake_body) > -1) {
+            food_random();
+        }
+        draw($(tem), 'yellow');
+    };
+
+    var draw = function(obj, c) {
+        obj.css('background', c)
+    };
+
+    var draw_snake_body = function() {
+        for (var i = 0; i < snake_body.length; i++) {
+            draw($(snake_body[i]), 'red');
+        }
+    };
+
+
+    var self = function(xy) {
+        if ($.inArray(xy, snake_body) > -1) {
+            return true;
+        }
+        return false;
+    }
+
+    var getpoint = function() {
+        level(point);
+        $("#point").text("分數: " + point);
+    };
+    var level = function(p) {
+        //無條件捨去
+        var x = Math.floor(p / 10);
+
+        switch (x) {
+
+            case 1:
+                speed = 500;
+                break;
+            case 2:
+                speed = 400;
+                break;
+            case 3:
+                speed = 300;
+                break;
+            case 4:
+                speed = 150;
+                break;
+            case 5:
+                speed = 100;
+                break;
+            case 6:
+                speed = 90;
+                break;
+            case 7:
+                speed = 80;
+                break;
+            case 8:
+                speed = 70;
+                break;
+            case 9:
+                speed = 60;
+                break;
+            case 10:
+                speed = 50;
+                break;
+        }
+    }
+    var info = function() {
+        getpoint();
+        if (current_direction != "") {
+            console.log("你按下了" + current_direction + "鍵");
+        }
+        console.log("目前蛇頭座標 x : " + (current_location_x));
+        console.log("目前蛇頭座標 y : " + current_location_y);
+        console.log(snake_body);
+        console.log("分數:" + point);
+
+        /*console.log("x:"+food_location_x);
+        console.log("y:"+food_location_y);*/
+    };
+
+    var moveRight = function() {
+        if (current_location_x == max_x - 1) {
+            return gameover();
+        } else {
+            if (right_lock == false) {
+                //吃到食物
+                if ((current_location_x == food_location_x) && (current_location_y == food_location_y)) {
+                    var xy = snake_body[0].substr(1);
+                    var x = xy.split('_')[1];
+                    var y = xy.split('_')[0];
+
+                    if (current_location_y == y) {
+                        current_length = snake_body.unshift(['#', y, '_', --x].join(''));
+                    } else if (x > current_location_x) {
+                        current_length = snake_body.unshift(['#', y, '_', ++x].join(''));
+                    } else if (x < current_location_x) {
+                        current_length = snake_body.unshift(['#', y, '_', --x].join(''));
+                    }
+                    food_random();
+                    point+=getfood_point;
+                } else {
+                    if (self(['#', current_location_y, '_', current_location_x + 1].join(''))) {
+                        return gameover();
+                    }
+                    draw($(snake_body.shift()), 'white')
+                    snake_body.push(['#', current_location_y, '_', ++current_location_x].join(''));
+                }
+            }
+            draw_snake_body();
+            info();
+            return true;
+        }
+    };
+
+    var moveLeft = function() {
+        if (current_location_x == 0) {
+            return gameover();
+        } else {
+            if (left_lock == false) {
+                if ((current_location_x == food_location_x) && (current_location_y == food_location_y)) {
+
+                    var xy = snake_body[0].substr(1);
+                    var xy2 = snake_body[0].substr(1);
+                    var x = xy.split('_')[1];
+                    var y = xy.split('_')[0];
+                    var x2 = xy2.split('_')[1];
+                    var y2 = xy2.split('_')[0];
+
+                    if (current_location_y == y) {
+                        current_length = snake_body.unshift(['#', y, '_', ++x].join(''));
+                    } else if (x > current_location_x) {
+                        current_length = snake_body.unshift(['#', y, '_', ++x].join(''));
+                    } else if (x < current_location_x) {
+                        current_length = snake_body.unshift(['#', y, '_', x--].join(''));
+                    }
+
+                    food_random();
+                    point+=getfood_point;
+                } else {
+                    if (self(['#', current_location_y, '_', current_location_x - 1].join(''))) {
+                        return gameover();
+                    }
+                    draw($(snake_body.shift()), 'white')
+                    snake_body.push(['#', current_location_y, '_', --current_location_x].join(''));
+                }
+                draw_snake_body();
+                info();
+                return true;
+            }
+
+        }
+    };
+
+    var moveUp = function() {
+        if (current_location_y == 0) {
+            return gameover();
+        } else {
+            if (up_lock == false) {
+
+                if ((current_location_x == food_location_x) && (current_location_y == food_location_y)) {
+
+                    var xy = snake_body[0].substr(1);
+                    var xy2 = snake_body[0].substr(1);
+                    var x = xy.split('_')[1];
+                    var y = xy.split('_')[0];
+                    var x2 = xy2.split('_')[1];
+                    var y2 = xy2.split('_')[0];
+
+                    if (current_location_x == x) { // 頭尾x軸相同
+                        current_length = snake_body.unshift(['#', ++y, '_', x].join(''));
+                    } else if (x > current_location_x) { //尾在頭的相對方位右邊
+                        current_length = snake_body.unshift(['#', y, '_', ++x].join(''));
+                    } else if (x < current_location_x) { //尾在頭的相對方位左邊
+                        current_length = snake_body.unshift(['#', y, '_', --x].join(''));
+
+                    } else if ((y == y2) && (x > current_location_x || x < current_location_x)) {
+                        current_length = snake_body.unshift(['#', --y, '_', x].join(''));
+                    }
+
+                    food_random();
+                   point+=getfood_point;
+                } else {
+                    if (self(['#', current_location_y - 1, '_', current_location_x].join(''))) {
+                        return gameover();
+                    }
+                    draw($(snake_body.shift()), 'white')
+                    snake_body.push(['#', --current_location_y, '_', current_location_x].join(''));
+                }
+
+                draw_snake_body();
+                info();
+                return true;
+            }
+        }
+    };
+
+    var moveDown = function() {
+
+        if (current_location_y == max_y - 1) {
+            return gameover();
+        } else {
+            if (down_lock == false) {
+                if ((current_location_x == food_location_x) && (current_location_y == food_location_y)) {
+
+                    var xy = snake_body[0].substr(1);
+                    var xy2 = snake_body[0].substr(1);
+                    var x = xy.split('_')[1];
+                    var y = xy.split('_')[0];
+                    var x2 = xy2.split('_')[1];
+                    var y2 = xy2.split('_')[0];
+
+                    if (current_location_x == x) { // 頭尾x軸相同
+                        current_length = snake_body.unshift(['#', --y, '_', x].join(''));
+                    } else if (x > current_location_x) { //尾在頭的相對方位右邊
+                        current_length = snake_body.unshift(['#', y, '_', ++x].join(''));
+                    } else if (x < current_location_x) { //尾在頭的相對方位左邊
+                        current_length = snake_body.unshift(['#', y, '_', --x].join(''));
+
+                    } else if ((y == y2) && (x > current_location_x || x < current_location_x)) {
+                        current_length = snake_body.unshift(['#', ++y, '_', x].join(''));
+                    }
+                    food_random();
+                   point+=getfood_point;
+                } else {
+                    if (self(['#', current_location_y + 1, '_', current_location_x + 1].join(''))) {
+                        return gameover();
+                    }
+                    draw($(snake_body.shift()), 'white')
+                    snake_body.push(['#', ++current_location_y, '_', current_location_x].join(''))
+                }
+
+                draw_snake_body();
+                info();
+                return true;
+            }
+        }
+    };
+    </script>
+</body>
+
+</html>

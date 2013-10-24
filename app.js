@@ -33,6 +33,10 @@ app.get('/', function(req, res) {
     console.log(("IP:" + getClientIp(req) + " connect"));
 });
 
+app.get('/snake', function(req, res) {
+     res.sendfile(__dirname + '/snake.html');
+});
+ 
 var server = http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
 });
