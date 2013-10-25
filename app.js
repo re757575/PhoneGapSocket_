@@ -82,7 +82,7 @@ io.sockets.on('connection', function(socket) {
 
     /* snake game*/
     //form html
-    //
+   /*
     socket.on('gameReady', function(data) {
         io.sockets.emit('resp_gameReady', "true"); //to mobile
     });
@@ -117,7 +117,7 @@ io.sockets.on('connection', function(socket) {
     });
 
 
-});
+});*/
 
 
 
