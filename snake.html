@@ -31,10 +31,6 @@
     if (!gstart) {
 
     }
-            socket.on("move", function(data) {
-           // $(['#' + data].join('')).click();
-           alert(data);
-        });
     </script>
 </head>
 
@@ -73,7 +69,11 @@
 
     $("#start").click(function() {
         start();
-        socket.emit("gameReady", "true");
+        // socket.emit("gameReady", "true");
+        socket.on("move", function(data) {
+            $(['#' + data].join('')).click();
+
+        });
         return false;
     });
 
