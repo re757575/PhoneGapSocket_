@@ -105,7 +105,7 @@ io.sockets.on('connection', function(socket) {
             io.sockets.emit('move', 'left');
         } else if (y > 4) {
             io.sockets.emit('move', 'down');
-        } else if (y < -4: ) {
+        } else if (y < -4) {
             io.sockets.emit('move', 'up');
         }
         /*
