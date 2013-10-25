@@ -109,7 +109,7 @@ io.sockets.on('connection', function(socket) {
         } else if (y < -4) {
             io.sockets.emit('move', 'up');
         }
-        else if (z >= 7) {
+        else if (z <= -7) {
             io.sockets.emit('move', 'restart');
         }
 
