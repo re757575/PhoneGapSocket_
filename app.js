@@ -86,7 +86,7 @@ io.sockets.on('connection', function(socket) {
       if(data){
            io.sockets.emit('gameStart',true);
       }  
-    )}
+    });
 
     //form html
     socket.on('gameReady', function(data) {
