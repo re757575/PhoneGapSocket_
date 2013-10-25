@@ -100,9 +100,9 @@ io.sockets.on('connection', function(socket) {
         var x = xyz.split(',')[0];
         var y = xyz.split(',')[1];
         if (x > 4) {
-            io.sockets.emit('move', 'right');
-        } else if (x < -4) {
             io.sockets.emit('move', 'left');
+        } else if (x < -4) {
+            io.sockets.emit('move', 'right');
         } else if (y > 4) {
             io.sockets.emit('move', 'down');
         } else if (y < -4) {
