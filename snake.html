@@ -65,13 +65,19 @@
     var goon;
     var point;
     var getfood_point = 5;
-    var gameisStart = false;
+    var gameOver = false;
 
     $("#start").click(function() {
         start();
         // socket.emit("gameReady", "true");
         socket.on("move", function(data) {
-            $(['#' + data].join('')).click();
+
+            if (data == "restart") {
+                setTimeout($(['#' + data].join('')).click(), 1500);
+            } else {
+                $(['#' + data].join('')).click();
+
+            }
 
         });
         return false;
@@ -151,7 +157,11 @@
     };
 
     var gameover = function() {
-        // $(document).unbind('keydown');
+        //$(document).unbind('keydown');
+        right_lock = true;
+        left_lock = true;
+        up_lock = true;
+        down_lock = true;
         window.clearInterval(timer);
         alert("game over");
         return false;

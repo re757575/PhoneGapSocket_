@@ -99,6 +99,7 @@ io.sockets.on('connection', function(socket) {
         var xyz = data;
         var x = xyz.split(',')[0];
         var y = xyz.split(',')[1];
+         var z= xyz.split(',')[2];
         if (x > 4) {
             io.sockets.emit('move', 'left');
         } else if (x < -4) {
@@ -108,22 +109,9 @@ io.sockets.on('connection', function(socket) {
         } else if (y < -4) {
             io.sockets.emit('move', 'up');
         }
-        /*
-        switch (xyz) {
-            case xyz.split(',')[0] > 4:
-                io.sockets.emit('move', 'right');
-                break;
-            case xyz.split(',')[0] < -4:
-                io.sockets.emit('move', 'left');
-                break;
-            case xyz.split(',')[1] > 4:
-                io.sockets.emit('move', 'down');
-                break;
-            case xyz.split(',')[1] < -4:
-                io.sockets.emit('move', 'up');
-                break;
-
-        }*/
+        else if (z >= 7) {
+            io.sockets.emit('move', 'restart');
+        }
 
     });
 
