@@ -30,7 +30,8 @@
 
     if (!gstart) {
         socket.on("move", function(data) {
-            $(['#' + data].join('')).click();
+           // $(['#' + data].join('')).click();
+           alert(data);
         });
     }
     </script>
