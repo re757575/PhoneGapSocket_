@@ -17,14 +17,18 @@
     var socket = io.connect();
 
 
-
+    var gstart = false;
     socket.on('gameStart', function(data) {
         if (data) {
-            socket.on("move", function(data) {
-                $(['#'+data].join('')).click();
-            });
+            gstart = true;
         }
     });
+
+    if (gstart) {
+        socket.on("move", function(data) {
+            $(['#' + data].join('')).click();
+        });
+    }
     </script>
 </head>
 
