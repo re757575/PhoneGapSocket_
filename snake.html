@@ -19,16 +19,13 @@
 
     var gstart = false;
     socket.on('gameStart', function(data) {
+
         if (data == "true") {
-            gstart = true;
+            socket.on("move", function(data) {
+                $(['#' + data].join('')).click();
+            });
         }
     });
-
-    if (gstart) {
-        socket.on("move", function(data) {
-            $(['#' + data].join('')).click();
-        });
-    }
     </script>
 </head>
 
