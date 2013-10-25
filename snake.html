@@ -19,7 +19,7 @@
 
     var gstart = false;
     socket.on('gameStart', function(data) {
-        if (data) {
+        if (data == "true") {
             gstart = true;
         }
     });
@@ -67,7 +67,7 @@
 
     $("#start").click(function() {
         start();
-        socket.emit("gameReady", true);
+        socket.emit("gameReady", "true");
         return false;
     });
 
