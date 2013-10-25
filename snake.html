@@ -23,14 +23,16 @@
         if (data == "true") {
             gstart == true;
         }
-        
-        if (gstart) {
-            socket.on("move", function(data) {
-                $(['#' + data].join('')).click();
-            });
-        }
+
+
 
     });
+
+    if (!gstart) {
+        socket.on("move", function(data) {
+            $(['#' + data].join('')).click();
+        });
+    }
     </script>
 </head>
 

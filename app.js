@@ -91,7 +91,7 @@ io.sockets.on('connection', function(socket) {
         io.sockets.emit('gameStart', "true");
     });
 
-
+*/
 
     socket.on('playerDirection', function(data) {
         console.log(data);
@@ -114,7 +114,7 @@ io.sockets.on('connection', function(socket) {
 
         }
 
-    });*/
+    });
 
 
 });
