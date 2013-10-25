@@ -34,9 +34,9 @@ app.get('/', function(req, res) {
 });
 
 app.get('/snake', function(req, res) {
-     res.sendfile(__dirname + '/snake.html');
+    res.sendfile(__dirname + '/snake.html');
 });
- 
+
 var server = http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
 });
@@ -78,10 +78,42 @@ io.sockets.on('connection', function(socket) {
         console.log("acceler: " + data);
         io.sockets.emit('acceler_result', data);
     });
-    
-    socket.on('disconnect', function() {
-        console.log(ip + "    disconnect  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-         io.sockets.emit('_disconnect', "_disconnect");
+
+
+    /* snake game*/
+
+    socket.on('playerConnet', function(data) {
+      if(data){
+           io.sockets.emit('gameStart',true);
+      }  
+    )}
+
+    //form html
+    socket.on('gameReady', function(data) {
+         io.sockets.emit('resp_gameReady',true);//to mobile
+    });
+
+    socket.on('playerDirection', function(data) {
+        console.log(data);
+
+        var xyz = data;
+
+        switch (xyz) {
+            case xyz.split(',')[0] > 4:
+                io.sockets.emit('move', 'right');
+                break;
+            case xyz.split(',')[0] < -4:
+                io.sockets.emit('move', 'left');
+                break;
+            case xyz.split(',')[1] > 4:
+                io.sockets.emit('move', 'down');
+                break;
+            case xyz.split(',')[1] < -4:
+                io.sockets.emit('move', 'up');
+                break;
+
+        }
+
     });
 
 
