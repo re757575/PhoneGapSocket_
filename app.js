@@ -82,7 +82,7 @@ io.sockets.on('connection', function(socket) {
 
     /* snake game*/
     //form html
-   /*
+    /*
     socket.on('gameReady', function(data) {
         io.sockets.emit('resp_gameReady', "true"); //to mobile
     });
@@ -97,7 +97,18 @@ io.sockets.on('connection', function(socket) {
         console.log(data);
 
         var xyz = data;
-
+        var x = xyz.split(',')[0];
+        var y = xyz.split(',')[1];
+        if (x > 4) {
+            io.sockets.emit('move', 'right');
+        } else if (x < -4) {
+            io.sockets.emit('move', 'left');
+        } else if (y > 4) {
+            io.sockets.emit('move', 'down');
+        } else if (y < -4: ) {
+            io.sockets.emit('move', 'up');
+        }
+        /*
         switch (xyz) {
             case xyz.split(',')[0] > 4:
                 io.sockets.emit('move', 'right');
@@ -112,7 +123,7 @@ io.sockets.on('connection', function(socket) {
                 io.sockets.emit('move', 'up');
                 break;
 
-        }
+        }*/
 
     });
 
