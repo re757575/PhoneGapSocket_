@@ -81,17 +81,17 @@ io.sockets.on('connection', function(socket) {
 
 
     /* snake game*/
+    //form html
+    //
+    socket.on('gameReady', function(data) {
+        io.sockets.emit('resp_gameReady', "true"); //to mobile
+    });
 
     socket.on('playerConnet', function(data) {
-      if(data){
-           io.sockets.emit('gameStart',"true");
-      }  
+        io.sockets.emit('gameStart', "true");
     });
 
-    //form html
-    socket.on('gameReady', function(data) {
-         io.sockets.emit('resp_gameReady',"true");//to mobile
-    });
+
 
     socket.on('playerDirection', function(data) {
         console.log(data);
